@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 自关联型关系多对一 查询所有父栏-->
+<mapper namespace="com.mybatis.dao.INewsLabelDao1">
+     
+    <!-- <select id="" resultMap="">
+          select id,name from tbl_newlabel where
+          id=#{pid}
+     </select> -->
+     
+     <resultMap type="NewsLabel1" id="newslabelMapper">
+          <id column="id" property="id"/>
+          <result column="name" property="name"/>
+          <association property="parent" javaType="NewsLabel1"
+          select="selectNewsLabelById" column="pid"
+          />
+        
+     </resultMap>
+     
+      <select id="selectNewsLabelById" resultMap="newslabelMapper">
+          select id,name,pid from tbl_newlabel where
+          id=#{id}
+     </select>
+</mapper>

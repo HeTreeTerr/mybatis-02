@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 自关联型关系一对多 查询所有子栏-->
+<mapper namespace="com.mybatis.dao.INewsLabelDao">
+     
+    <!--  <select id="" resultMap="newslabelMapper">
+          select id,name from tbl_newlabel where
+          pid=#{cid}
+     </select>
+      -->
+     <!--  <resultMap type="NewsLabel" id="newslabelMapper">
+          <id column="id" property="id"/>
+          <result column="name" property="name"/>
+          <collection property="children"
+          ofType="NewsLabel" 
+          select="selectChildrenById" column="id"/>
+        
+     </resultMap>-->
+
+     <select id="selectChildrenById" resultMap="newslabelMapper">
+          select id,name from tbl_newlabel where
+          pid=#{cid}
+     </select>
+    <!-- 自关联型关系一对多 查询自身及所有子栏--> 
+    
+    <!-- <select id="selectChildrenById" resultMap="newslabelMapper">
+        select id,name,form tbl_newlabel where pid=#{}
+    </select> -->
+     <resultMap type="NewsLabel" id="newslabelMapper">
+          <id column="id" property="id"/>
+          <result column="name" property="name"/>
+          <collection property="children"
+          ofType="NewsLabel" 
+          select="selectChildrenById" column="id"/>
+        
+     </resultMap>
+     
+     <select id="selectNewsLabelById" resultMap="newslabelMapper">
+          select id,name from tbl_newlabel where
+          id=#{id}
+     </select>
+</mapper>

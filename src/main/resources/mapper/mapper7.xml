@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 多对多关系，双方关系平等，通过一方可查询另一方 查询所有父栏-->
+<mapper namespace="com.mybatis.dao.IStudent2Dao">
+     
+    <resultMap type="Student2" id="student2Mapper">
+          <id column="sid" property="sid"/>
+          <result column="sname" property="sname"/>
+          <collection property="coursers" ofType="Courser">
+          <id column="cid" property="cid"/>
+          <result column="cname" property="cname"/>
+          </collection>
+        
+     </resultMap>
+     
+     <select id="selectStudent2ById" resultMap="student2Mapper">
+         select sid,sname,cid,cname
+         from tbl_student2,tbl_middle,tbl_course
+         where sid=student2id and cid=courseid
+         and sid=#{id}
+     </select>
+</mapper>

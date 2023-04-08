@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+   <!-- 使用映射解决数据库与bean名称不一致问题 
+   增删改只需将列名修改就行，但查询需要此映射-->
+    <resultMap type="Student" id="studentMapper">
+       <id column="tid" property="id"/>
+       <result column="tname" property="name"/>
+       <result column="tage" property="age"/>
+       <result column="tscore" property="score"/>
+    </resultMap>
+
+    <!-- parameterType="Students"可省略 -->
+    <insert id="insertStudent" parameterType="Student">
+         insert into tbl_student(tname,tage,tscore) values(#{name},#{age},#{score})
+    </insert>
+    
+    <insert id="insertStudentCacheId" parameterType="Student">
+         insert into tbl_student(tname,tage,tscore) values(#{name},#{age},#{score})
+         <!--          类型        赋值到           设置出值顺序                        -->
+         <selectKey resultType="int" keyProperty="id" order="AFTER">
+             select @@identity
+         </selectKey>
+    </insert>
+    
+    <delete id="deleteById" parameterType="Student">
+    <!-- id=#{id}放任意值  #{}仅仅是占位符-->
+            delete from tbl_student where tid=#{id}
+    </delete>
+    
+    <update id="updateStu" parameterType="Student">
+          update tbl_student set tname=#{name},tage=#{age},tscore=#{score} where tid=#{id}
+    </update>
+    
+    <!-- 将返回值封装到 别名Student中 ： resultType="Student"-->
+    <select id="selectStu" resultMap="studentMapper" parameterType="Student">
+         <!-- 别名：解决数据库表名与bean表名不一致问题 加t的是数据库列名,后面是bean属性名
+         select tid id,tname name,tage age,tscore score from tbl_student 
+          -->         
+         select tid,tname,tage,tscore from tbl_student 
+        <!--select * from tbl_student 可以使用-->
+    </select>
+    
+    <select id="selectStuById" resultMap="studentMapper" parameterType="Student">
+         select tid,tname,tage,tscore from tbl_student where tid=#{id}
+    </select>
+    
+    <select id="selectStuByName" resultMap="studentMapper" parameterType="Student">
+         <!-- select id,name,age,score from tbl_student where name like concat('%',#{name},'%') -->
+         <!--不建议使用 select id,name,age,score from tbl_student where name like '%${value}%'  -->
+         select tid,tname,tage,tscore from tbl_student where tname like '%' #{name} '%'
+    </select>
+</mapper>

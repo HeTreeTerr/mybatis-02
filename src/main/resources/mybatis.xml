@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE configuration  
+ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+ 
+ <configuration>
+ <properties resource="jdbc.properties"></properties><!-- 引入数据库连接数据 -->
+   
+   <settings>
+   <!-- 设置延迟加载 ,总开关-->
+       <setting name="lazyLoadingEnabled" value="true"/>
+       <!-- 侵入式延迟加载 -->
+       <setting name="aggressiveLazyLoading" value="false"/>
+       <!-- 深入式查询  -->
+       <setting name="cacheEnabled" value="true"/>
+       <!-- 全局式：二级缓存开关 关闭：false -->
+       <setting name="cacheEnabled" value="true"/>
+       
+   </settings>
+   
+    <!-- 定义类型别名，用于mapper.xml的parameterType="Student" -->
+    <typeAliases>
+          <!-- <typeAlias type="com.mybatis.beans.Student" alias="Student"></typeAlias> 配置此句时：
+          mapper.xml中需写parameterType="Student"-->
+          
+          <!-- 可省略 -->
+           <package name="com.mybatis.beans"></package> 
+            <package name="com.mybatis.beans1"></package> 
+    </typeAliases>
+    <!-- 配置运行环境 -->
+    <environments default="mysqlEM"><!-- 可配置多个数据库连接 default="mysqlEM"指定-->
+        <environment id="mysqlEM">
+        <!-- JDBC 使用数据库jdbc默认管理 -->
+           <transactionManager type="JDBC"></transactionManager>
+           <dataSource type="POOLED"><!-- 数据源 -->
+               <property name="driver" value="${jdbc.driver}"/>
+               <property name="url" value="${jdbc.url}"/>
+               <property name="username" value="${jdbc.user}"/>
+               <property name="password" value="${jdbc.password}"/> 
+           </dataSource>           
+        </environment>
+    </environments>
+    <!-- 注册映射文件 -->
+    <mappers>
+        <mapper resource="mapper/mapper.xml"></mapper>
+        <mapper resource="mapper/mapper1.xml"></mapper>
+        <mapper resource="mapper/mapper2.xml"></mapper>
+        <mapper resource="mapper/mapper3.xml"></mapper>
+        <mapper resource="mapper/mapper4.xml"></mapper>
+        <mapper resource="mapper/mapper5.xml"></mapper>
+        <mapper resource="mapper/mapper6.xml"></mapper>
+        <mapper resource="mapper/mapper7.xml"></mapper>
+    </mappers>
+ </configuration>

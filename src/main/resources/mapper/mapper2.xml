@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.dao.IStudentDao2">
+   <!-- 使用映射解决数据库与bean名称不一致问题 
+   增删改只需将列名修改就行，但查询需要此映射-->
+    <resultMap type="Student" id="studentMapper">
+       <id column="tid" property="id"/>
+       <result column="tname" property="name"/>
+       <result column="tage" property="age"/>
+       <result column="tscore" property="score"/>
+    </resultMap>
+   
+    <!-- sql片段，影响可读性。可包含任意部分的sql语句 -->
+    <sql id="selectColums">
+        tid,tname,tage,tscore
+    </sql>
+   
+   <!-- 
+      #{}中可放：
+      1.参数对象的属性
+      2.随意内容，此事的#{}是个占位符
+      3.参数为map是的key
+      4.参数为map时，若key所对应的value为对象，则可将该对象的属性放入
+      5.参数的索引号
+    --> 
+   
+    <!-- 多条件查询，是用HashMap链表的key执行 -->
+    <select id="selectStudentsByCondition" resultMap="studentMapper" >
+         <!-- select id,name,age,score from tbl_student where name like concat('%',#{name},'%') -->
+         <!--不建议使用 select id,name,age,score from tbl_student where name like '%${value}%'  -->
+         select tid,tname,tage,tscore from tbl_student where 
+         tname like '%' #{nameCon} '%' 
+         and tage > #{ageCon}  
+         <!-- and tscore >#{scoreCon} -->
+         and tscore >#{student.score}
+    </select>
+    
+    <!-- 多条件查询 ,使用映射参数的位置获取值-->
+    <select id="selectStudentsByCondition1" resultMap="studentMapper" >
+         <!-- select id,name,age,score from tbl_student where name like concat('%',#{name},'%') -->
+         <!--不建议使用 select id,name,age,score from tbl_student where name like '%${value}%'  -->
+         select tid,tname,tage,tscore from tbl_student where 
+         tname like '%' #{0} '%' 
+         and tage > #{1}  
+         <!-- and tscore >#{scoreCon} -->
+         <!-- and tscore >#{student.score} -->
+    </select>
+    
+    <!-- 动态sql语句if -->
+    <select id="selectStudentsByCondition2" resultMap="studentMapper" >
+         <!-- select id,name,age,score from tbl_student where name like concat('%',#{name},'%') -->
+         <!--不建议使用 select id,name,age,score from tbl_student where name like '%${value}%'  -->
+         select tid,tname,tage,tscore from tbl_student 
+         <!-- 此句影响执行效率 -->
+         where 1=1
+         <!-- 不可以直接使用&&等符号(xml文件) -->
+         <if test="name != null and name != '' ">
+         and  tname like '%' #{name} '%'
+         </if>
+          <if test="age > 0">
+          and tage > #{age}  
+          </if>
+    </select>
+    
+    <!-- 动态sql语句where 相比于纯if效率高-->
+    <select id="selectStudentsByCondition3" resultMap="studentMapper" >
+         <!-- select id,name,age,score from tbl_student where name like concat('%',#{name},'%') -->
+         <!--不建议使用 select id,name,age,score from tbl_student where name like '%${value}%'  -->
+         select tid,tname,tage,tscore from tbl_student 
+         <where>
+            <if test="name != null and name != '' ">
+         <!-- 自动保留and，但不会自动添加 -->
+         and  tname like '%' #{name} '%'
+         </if>
+          <if test="age > 0">
+          and tage > #{age}  
+          </if>
+         </where>
+    </select>
+    
+    <!-- 动态sql语句choose -->
+    <select id="selectStudentsByCondition4" resultMap="studentMapper" >
+         <!-- select id,name,age,score from tbl_student where name like concat('%',#{name},'%') -->
+         <!--不建议使用 select id,name,age,score from tbl_student where name like '%${value}%'  -->
+         select tid,tname,tage,tscore from tbl_student 
+         <where>
+         <!-- 单纯的自上而下，选择查询，满足某个条件即进行执行 -->
+            <choose>
+               <when test="name != null and name != '' ">
+                and  tname like '%' #{name} '%'  
+               </when>
+               <when test="age > 0">
+               and tage > #{age} 
+               </when>
+               <otherwise>
+                 1=2
+               </otherwise>
+            </choose>
+         </where>
+    </select>
+    
+    <!-- 动态sql语句 foreach.使用foreach获取数组内的信息-->
+    <select id="selectStudentsByCondition5" resultMap="studentMapper" >
+         <!--原生写法： select tid,tname,tage,tscore from tbl_student 
+         where tid in (1,2) -->
+         select tid,tname,tage,tscore from tbl_student
+         <if test="array.length > 0">
+             <where>
+                tid in
+                <foreach collection="array" item="myid" open="(" close=")" separator=",">
+                #{myid}
+                </foreach>
+             </where>
+         </if>
+    </select>
+    
+    <!-- 动态sql语句 foreach.使用foreach获取单列表内的信息-->
+    <select id="selectStudentsByCondition6" resultMap="studentMapper" >
+         <!--原生写法： select tid,tname,tage,tscore from tbl_student 
+         where tid in (1,2) -->
+         select tid,tname,tage,tscore from tbl_student
+         <if test="list.size > 0">
+             <where>
+                tid in
+                <foreach collection="list" item="myid" open="(" close=")" separator=",">
+                #{myid}
+                </foreach>
+             </where>
+         </if>
+    </select>
+    
+     <!-- 动态sql语句 foreach.使用foreach获取自定义链表的信息-->
+    <select id="selectStudentsByCondition7" resultMap="studentMapper" >
+        
+         select 
+         <!-- tid,tname,tage,tscore -->
+         <!-- sql代码片段使用 -->
+         <include refid="selectColums" />
+          from tbl_student
+         <if test="list.size > 0">
+             <where>
+                tid in
+                <foreach collection="list" item="stu" open="(" close=")" separator=",">
+                #{stu.id}
+                </foreach>
+             </where>
+         </if>
+    </select>
+    
+   
+</mapper>
