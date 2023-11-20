@@ -11,6 +11,7 @@ import com.mybatis.utils.MyBatisUtils;
 public class StudentDaoImpl1 implements IStudentDao {
 
 	private SqlSession sqlSession;
+
 	@Override
 	public void insertStu(Student student) {
 		// TODO Auto-generated method stub

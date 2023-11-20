@@ -12,47 +12,56 @@ import org.junit.Test;
 import com.mybatis.beans.Student;
 import com.mybatis.dao.IStudentDao1;
 import com.mybatis.utils.MyBatisUtils;
+
 //省去impl文件，直接和mapper.xml对接
 public class Mytest3 {
+
 	private IStudentDao1 dao;
+
 	private SqlSession sqlSession;
+
 	@Before
 	public void before(){
 		sqlSession= MyBatisUtils.getSqlSession();
 		 dao = sqlSession.getMapper(IStudentDao1.class);	
 	}
+
 	@After
 	public void after(){
 		if(sqlSession!=null){
 			sqlSession.close();
 		}
 	}
-   /* @Test
-	public void testInsert(){
+
+	@Test
+	public void insertStu(){
 		
 		Student student = new Student("李四", 15, 98);
 		
 	    dao.insertStu(student);
 	    sqlSession.commit();
-	}*/
-    /*@Test
-	public void testInsert(){
+	}
+
+    @Test
+	public void insertStudentCacheId(){
 		
 		Student student = new Student("李二狗", 15, 98);
 		System.out.println(student);
 	    dao.insertStudentCacheId(student);
 	    sqlSession.commit();
 	    System.out.println(student);
-	}*/
-	/* @Test
-	public void testInsert(){
+	}
+
+	@Test
+	public void deleteById(){
 		
 		int id = 5;		
 	    dao.deleteById(id);
 	    sqlSession.commit();
-	}*/
-	/*@Test
-	public void testInsert(){
+	}
+
+	@Test
+	public void updateStu(){
 		
 		Student student = new Student();
 		student.setId(19);
@@ -62,9 +71,10 @@ public class Mytest3 {
 		
 	    dao.updateStu(student);
 	    sqlSession.commit();
-	}*/
+	}
+
     @Test
-    public void testInsert(){
+    public void selectStu(){
 		
 		List<Student> students = dao.selectStu();
 		
@@ -73,36 +83,35 @@ public class Mytest3 {
 		}
 	    
 	}
-	/*@Test
-	 public void testInsert(){
-			//不能正常执行，找不到key键
-			Map<String, Object> map = dao.selectAllStudentsMap();
-			
-			
-			System.out.println(map.get("李二狗"));
-			
-		    
-		}*/
-	/*@Test
-	 public void testInsert(){
+
+	@Test
+	public void testInsert(){
+
+		//不能正常执行，找不到key键
+		Map<String, Object> map = dao.selectAllStudentsMap();
+		System.out.println(map.get("李二狗"));
+	}
+
+	@Test
+	 public void selectStuById(){
 	  
 		int id=16;
 		Student student = dao.selectStuById(id);
 		System.out.println(student);
-	  
-		}*/
-    /*@Test
-	 public void testInsert(){
+	}
+
+    @Test
+	public void selectStuByName(){
 	  
 		String name="李";
 		List<Student> students = dao.selectStuByName(name);
 		for(Student student:students){
 			System.out.println(student);
 		}
-	  
-		}*/
-	/*@Test
-	 public void testInsert(){
+	}
+
+	@Test
+	public void selectStuById1(){
 	  //调用两次sql语句只执行了一次，所以他证明了一级缓存的存在
 		//强制开启，不可关闭
 		//缓存底层实现是一个Map，Map的value是查询结果
@@ -116,7 +125,8 @@ public class Mytest3 {
 	    
 		Student student1 = dao.selectStuById(id);
 		System.out.println(student1);
-		}*/
+	}
+
 	//开启二级缓存步骤
 	//1.对实体进行序列化
 	//2.在映射文件中添加<cache/>标签
@@ -126,8 +136,8 @@ public class Mytest3 {
 	//3.从DB中进行select查询的条件：
 	//1）缓存中不存在这个key
 	//2)缓存中存在该key所对应的Entry对象，但其value为null
-	/*@Test
-	 public void testInsert(){
+	@Test
+	public void selectStuById2(){
 	  
 		int id=2;
 		Student student = dao.selectStuById(id);
@@ -135,24 +145,22 @@ public class Mytest3 {
 		sqlSession.close();
 		
 		sqlSession= MyBatisUtils.getSqlSession();
-		 dao = sqlSession.getMapper(IStudentDao1.class);
-		  
-			
-		    dao.insertStu(new Student("李四", 15, 98));*/
+		dao = sqlSession.getMapper(IStudentDao1.class);
+		dao.insertStu(new Student("李四", 15, 98));
 		 
-		    /* sqlSession.commit();
-		 
+		/* sqlSession.commit();
 		 sqlSession.close();
-		 
 		 sqlSession= MyBatisUtils.getSqlSession();
 		 dao = sqlSession.getMapper(IStudentDao1.class);*/
+
 		/*Student student3 = dao.selectStuById(id);
-		System.out.println(student3);
-		}*/
-	/*@Test
-	public void testInsert(){
+		System.out.println(student3);*/
+	}
+
+	@Test
+	public void getPath(){
 		String path = System.getProperty("java.io.tmpdir");
 		System.out.println(path);
-	}*/
+	}
 	
 }

@@ -8,11 +8,14 @@ import com.mybatis.dao.IStudentDao;
 import com.mybatis.dao.impl.StudentDaoImpl1;
 
 public class Mytest1 {
+
 	private IStudentDao dao;
+
 	@Before
 	public void before(){
 		 dao = new StudentDaoImpl1();	
 	}
+
     @Test
 	public void testInsert(){
 		

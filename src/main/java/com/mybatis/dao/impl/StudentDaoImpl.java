@@ -16,6 +16,7 @@ import com.mybatis.beans.Student;
 public class StudentDaoImpl implements IStudentDao {
 
 	private SqlSession sqlSession;
+
 	@Override
 	public void insertStu(Student student) {
 		// TODO Auto-generated method stub
