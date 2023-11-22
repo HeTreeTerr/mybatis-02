@@ -22,13 +22,16 @@ public interface IStudentDao1 {
 	
 	@Delete(value={"delete from tbl_student where tid=#{id}"})
 	public void deleteById(int id);//由id删除
+
 	public void updateStu(Student student);//更新
 	
 	//因为属性名问题反射失败
 	@Select("select tid,tname,tage,tscore from tbl_student")
 	public List<Student> selectStu();//查询所有
+
 	public Map<String, Object> selectAllStudentsMap();
 	
 	public Student selectStuById(int id);//由id查询单条记录
+
 	public List<Student> selectStuByName(String name);//由姓名查找
 }

@@ -29,9 +29,8 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 				sqlSession.close();
 			}
 		}
-		
-        
 	}
+
 	@Override
 	public void insertStudentCacheId(Student student) {
 		// TODO Auto-generated method stub
@@ -46,6 +45,7 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 			}
 		}
 	}
+
 	@Override
 	public void deleteById(int id) {
 		// TODO Auto-generated method stub
@@ -60,6 +60,7 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 			}
 		}
 	}
+
 	@Override
 	public void updateStu(Student student) {
 		// TODO Auto-generated method stub
@@ -74,6 +75,7 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 			}
 		}
 	}
+
 	@Override
 	public List<Student> selectStu() {
 		// TODO Auto-generated method stub
@@ -91,6 +93,7 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 		}
 		return students;
 	}
+
 	@Override
 	public Map<String, Object> selectAllStudentsMap() {
 		// TODO Auto-generated method stub
@@ -107,6 +110,7 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 		}
 		return map;
 	}
+
 	@Override
 	public Student selectStuById(int id) {
 		// TODO Auto-generated method stub
@@ -124,6 +128,7 @@ public class StudentDaoImpl2 implements IStudentDao1 {
 		return student;
 		
 	}
+
 	@Override
 	public List<Student> selectStuByName(String name) {
 		// TODO Auto-generated method stub

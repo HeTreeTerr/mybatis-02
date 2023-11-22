@@ -18,15 +18,21 @@ import com.mybatis.dao.ICountryDao;
 import com.mybatis.utils.MyBatisUtils;
 //省去impl文件，直接和mapper.xml对接
 public class Mytest5 {
+
 	private ICountryDao dao;
+
 	private SqlSession sqlSession;
+
 	private Country country;
+
 	private Minister minister;
+
 	@Before
 	public void before(){
 		sqlSession= MyBatisUtils.getSqlSession();
 		 dao = sqlSession.getMapper(ICountryDao.class);	
 	}
+
 	@After
 	public void after(){
 		if(sqlSession!=null){
@@ -34,10 +40,9 @@ public class Mytest5 {
 		}
 	}
 
-	
-	
-	/*@Test	
-    public void testInsert(){
+	@Test
+    public void selectCountryById(){
+
 	   country = dao.selectCountryById(1);
 	   System.out.println(country.getMinisters());
 	   Set<Minister> ministers = country.getMinisters();
@@ -46,10 +51,10 @@ public class Mytest5 {
 	   while(it.hasNext()){
 		   System.out.println(((Minister)it.next()).getMname());
 	   }
-	}*/
+	}
 	
 	@Test	
-    public void testInsert1(){
+    public void selectCountryById1(){
 	   country = dao.selectCountryById1(1);
 	   System.out.println(country.getCname());
 	   /*Set<Minister> ministers = country.getMinisters();

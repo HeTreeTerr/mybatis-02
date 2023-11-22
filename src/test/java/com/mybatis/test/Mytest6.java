@@ -20,28 +20,36 @@ import com.mybatis.dao.IMinisterDao;
 import com.mybatis.utils.MyBatisUtils;
 //省去impl文件，直接和mapper.xml对接
 public class Mytest6 {
+
 	private IMinisterDao dao;
+
 	private SqlSession sqlSession;
+
 	private Country1 country1;
+
 	private Minister1 minister1;
+
 	@Before
 	public void before(){
 		sqlSession= MyBatisUtils.getSqlSession();
 		 dao = sqlSession.getMapper(IMinisterDao.class);	
 	}
+
 	@After
 	public void after(){
 		if(sqlSession!=null){
 			sqlSession.close();
 		}
 	}
-   /* @Test
-	public void test1(){
+
+    @Test
+	public void seleMinister1ById(){
 		minister1 = dao.seleMinister1ById(3);
 		System.out.println(minister1);
-	}*/
+	}
+
     @Test
-	public void test2(){
+	public void seleMinister1ById1(){
 		minister1 = dao.seleMinister1ById1(4);
 		System.out.println(minister1);
 	}

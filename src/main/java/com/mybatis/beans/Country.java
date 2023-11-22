@@ -5,7 +5,9 @@ import java.util.Set;
 public class Country {
 
 	private Integer cid;
+
 	private String cname;
+
 	//关联属性 set相比于数组和list，无序，不可重复
 	private Set<Minister> ministers;
 	
